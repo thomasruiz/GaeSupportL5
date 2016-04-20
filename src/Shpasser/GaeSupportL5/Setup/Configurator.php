@@ -4,8 +4,7 @@ namespace Shpasser\GaeSupportL5\Setup;
 
 use Illuminate\Console\Command;
 use Artisan;
-use Shpasser\GaeSupportL5\Storage\Optimizer;
-use Dotenv;
+use Dotenv\Dotenv;
 
 /**
  * Class Configurator
@@ -66,9 +65,8 @@ class Configurator
         $this->processFile($config_filesystems_php, ['addGaeDisk']);
 
         if ($cacheConfig) {
-            Dotenv::makeMutable();
-            Dotenv::load(dirname($env_production_file),
-                         basename($env_production_file));
+            $dotenv = new Dotenv(dirname($env_production_file), basename($env_production_file));
+            $dotenv->load();
 
             $result = Artisan::call('config:cache', array());
             if ($result === 0) {
